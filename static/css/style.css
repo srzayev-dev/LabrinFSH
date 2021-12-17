@@ -1,0 +1,109 @@
+*{
+	margin: 0px;
+	padding: 0px;
+    box-sizing: border-box;
+}
+
+footer .footer-bottom img {
+    width: 100%;
+    transform: translateY(15px);
+    object-fit: contain;
+}
+
+footer .footer-bottom {
+    width: 100%;
+    overflow: hidden;
+    padding-top: 10px;
+}
+
+footer {
+    margin-top: 50%;
+}
+
+footer .footer-top .footer-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+a, h1, h2, h3, h4, h5, h6, li, p, ul {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+
+.social-icons li {
+    margin-left: 15px;
+}
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+footer .footer-top .footer-icons {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+footer .footer-top .footer-nav a {
+    display: inline-block;
+    position: relative;
+}
+
+footer .footer-top a, footer .footer-top p {
+    font-size: 16px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: #231f20;
+    text-decoration: none;
+}
+
+body {
+    font-family: Nexa;
+}
+
+/*=======================================================
+      PAGINATION
+========================================================*/
+.pagination {
+	float: right;
+	border: none;
+	border-radius: 0px;
+}
+.pagination li a {
+	border-radius: 0px !important;
+	border: none;
+	background: #2d3a4b;
+	color: #fff;
+	margin: 0 2px;
+	height: 23px;
+	width: 23px;
+	padding: 0px;
+	text-align: center;
+	line-height: 23px;
+	font-size: 12px;
+}
+.pagination li a:hover {
+	background: #ffe115;
+	color: #2d3a4b;
+}
+.pagination li.active a {
+	background: #ffe115;
+	color: #2d3a4b;
+}
+.pagination.in-center {
+	text-align: center;
+	width: 100%;
+}
+.pagination.in-center li {
+	display: inline-block;
+}

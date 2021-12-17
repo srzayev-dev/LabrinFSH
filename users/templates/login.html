@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content  %}
+
+
+<div class="container"> 
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            {{form.errors}}
+        </div>
+        {% endif %}
+
+        <div class="mb-3">
+            <h6>LOGIN YOUR ACCOUNT</h6>
+            <form method="POST" id="login_form">
+              {% csrf_token %}
+              <ul class="row">
+                <!-- Email -->
+                <li class="col-md-12">
+                    <label for="exampleFormControlInput1" class="form-label">Email address
+                    {{form.email}}
+                  </label>
+                </li>
+                <!-- Password-->
+                <li class="col-md-12">
+                    <label for="exampleFormControlInput1" class="form-label">Password
+                    {{form.password}}
+                  </label>
+                </li>
+                
+                <!-- LOGIN -->
+                <li class="col-md-3">
+                  <button class="btn" id="sbmt">LOGIN</button>
+                </li>
+                
+              </ul>
+            </form>
+          </div>
+    </div>
+  </div>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content  %}
+
+
+<div class="container">
+<div class="card text-center">
+    <div class="card-header">
+      Details
+    </div>
+    <div class="card-body">
+      <h5 class="card-title"> {{ file_detail.title }}</h5>
+      <p class="card-text">{{ file_detail.user }} Share this file with you</p>
+      <p class="card-text">{{ file_detail.desc }}</p>
+      <a href="{% url 'openFile' file_detail.id %}">
+
+          <p class="card-text">{{ file_detail.file_field }}</p>
+        </a>
+      
+    </div>
+    <div class="card-footer text-muted">
+        {{ file_detail.created_at }}
+    </div>
+  </div>
+    <h4>Write here email if you want to share your post! </h4>
+    {% if error %}
+    {{ error }}
+    {% endif %}
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            {{form.errors}}
+        </div>
+    {% endif %}
+    <form method="POST" name="shareFile">
+        {%csrf_token %}
+        <ul class="row">
+            <li class="col-sm-12">
+              <label placeholer="email"> 
+                {{form.sharedUser}}
+                <div>
+
+                    <label for="">Can comment?</label>
+                    {{form.can_comment}}
+                </label>
+            </div>
+            </li>
+            <li class="col-sm-6">
+            <button type="submit" class="btn btn-dark" name="shareFile"> Share </button>
+            </li>
+          </ul>
+    </form>
+</div>
+
+
+
+{% endblock %}

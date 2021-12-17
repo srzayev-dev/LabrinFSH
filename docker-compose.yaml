@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  postgres:
+    container_name:   postgres
+    image:            postgres:9.6
+    restart: "on-failure"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgredb:/var/lib/postgresql/data
+    env_file: .env
+    environment:
+      - LC_ALL=C.UTF-8
+
+  redis:
+    container_name:   redis
+    image:            redis
+    restart: "on-failure"
+    ports:
+      - 6379:6379

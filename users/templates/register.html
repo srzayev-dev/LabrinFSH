@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content  %}
+
+<section class="padding-top-100 padding-bottom-100">
+<div class="container"> 
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        {{form.errors}}
+    </div>
+    {% endif %}
+
+ <div class="">
+    <div class="row"> 
+
+      <div class="col-sm-12">
+        <h6>REGISTER</h6>
+        <form method="POST">
+          {% csrf_token %}
+          <ul class="row">
+            
+            <!-- UserName -->
+            <li class="col-md-6">
+              <label> *USERNAME
+                {{form.username}}
+              </label>
+            </li>    
+            <!-- EMAIL ADDRESS -->
+            <li class="col-md-6">
+              <label> *EMAIL ADDRESS
+                {{form.email}}
+              </label>
+            </li>
+            <li class="col-md-6">
+              <label> *PASSWORD
+                {{form.password}}
+              </label>
+            </li>
+            
+            <!-- LAST NAME -->
+            <li class="col-md-6">
+              <label> *PASSWORD
+                {{form.password_confirmation}}
+              </label>
+            </li>
+            
+            <li class="col-md-6">
+              <button type="submit" class="btn">REGISTER NOW</button>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+ </div>
+</section>
+ {% endblock %}

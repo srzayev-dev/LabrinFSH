@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content  %}
+<div class="container">
+{% if request.user.is_authenticated %}
+<form action="" method="POST" enctype="multipart/form-data" name="uploadFile">
+    {%csrf_token %}
+    <ul class="row">
+        <li class="col-sm-12">
+          <label placeholer="title"> 
+            {{form.title}}
+          </label>
+        </li>
+        <li class="col-sm-12">
+            <label>
+              {{form.desc}}
+            </label>
+        </li>
+        <li class="col-sm-12">
+            <label>
+              {{form.file_field}}
+            </label>
+        </li>
+        <li class="col-sm-6">
+          <button type="submit" class="btn btn-dark btn-small pull-right no-margin" name="uploadFile">POST</button>
+        </li>
+      </ul>
+</form>
+{% endif %}
+</div>
+
+{% endblock %}
+    
+
+

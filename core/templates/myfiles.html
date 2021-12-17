@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content  %}
+
+
+<div class="container">
+{% for post in page_obj %}
+
+<div class="row">
+    <div class="col" style="display: flex; justify-content: center;">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h3 class="card-title" style="border-bottom: 1px solid;"> <i>Title: </i> {{ post.title }}  </h3>
+              <p class="card-text" style="border-bottom: 1px solid;"><b> <i> Description: </i> </b>  {{ post.desc }} </p>
+              <p class="card-text" style="border-bottom: 1px solid;"> <b><i>File name and format:</i></b>  {{ post.file_field }} </p>
+              <a href="{% url 'detailFile' post.id %}" class="card-link">Show More</a>
+            </div>
+          </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+<!-- Pagination -->
+
+{% if is_paginated %}
+<ul class="pagination in-center">
+
+  {% if page_obj.has_previous %}
+  <li><a href="?page={{page_obj.previous_page_number}}" page="{{ page_obj.previous_page_number }} id="previous">&laquo;</a></li>
+  {% else %}
+  <li class="disabled"><span>&laquo;</span></li>
+  {%endif%}
+
+  {% for i in paginator.page_range %}
+  {% if page_obj.number == i %}
+  <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+  {% else %}
+  <li><a href="?page={{i}}" class="page_num">{{ i }}</a></li>
+  {% endif %}
+  {% endfor %}
+
+  {% if page_obj.has_next %}
+  <li><a href="?page={{page_obj.next_page_number}}"  page="{{ page_obj.next_page_number }}" id="next">&raquo;</a></li>
+  {% else %}
+  <li class="disabled"><span>&raquo;</span></li>
+  {% endif %}
+</ul>
+
+{% endif %}
+
+{% endblock %}
