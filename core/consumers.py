@@ -8,14 +8,16 @@ from channels.db import database_sync_to_async
 
 from core.models import Post, Comment
 
+
 class ChatConsumer(AsyncConsumer):
+    
     async def websocket_connect(self, event):
         print('connected', event)
         await self.send({
             "type" : "websocket.accept"
         })
         # await asyncio.sleep(10)
-        other_user = self.scope['url_route']['kwargs']['username']
+        other_user = self.scope['url_route']['kwargs']['file_id']
         me = self.scope['user']
 
         print(other_user, me)

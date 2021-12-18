@@ -7,12 +7,13 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
 
 import os
 import django
-
+from django.urls import re_path
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 
-from core.routing import 
+from core.consumers import ChatConsumer
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LabrinFSH.settings')
 django.setup()
@@ -21,8 +22,8 @@ django.setup()
 application = ProtocolTypeRouter({
   "http": get_asgi_application(),
   "websocket": AuthMiddlewareStack(
-        URLRouter(
-            core.routing.websocket_urlpatterns
-        )
+        URLRouter([
+            re_path(r"^(?P<username>[\w.@+-]+)", ChatConsumer),
+        ])
     ),
 })

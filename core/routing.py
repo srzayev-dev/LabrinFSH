@@ -1,16 +1,16 @@
-from django.urls import url
-from django.conf.urls import ProtocolTypeRouter, URLRouter
+from django.urls import path
+from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator, OriginValidator
 
 from core.consumers import ChatConsumer
 
 
-application = ProtocolTypeRouter({
+websocket_urlpatterns = ProtocolTypeRouter({
     'websocket' : AllowedHostsOriginValidator(
         AuthMiddlewareStack(
             [
-                url(r"^(?P<username>[\w.@+-]+)", ChatConsumer),
+                path("detail/<int:file_id>", ChatConsumer),
             ]
         )
     )
