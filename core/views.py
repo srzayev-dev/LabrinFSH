@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth import get_user_model
 from django.core.paginator import EmptyPage, Paginator
 from django.views.generic.base import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post,SharePost
 from core.forms import UploadFilesForm, ShareFilesForm
@@ -45,7 +46,7 @@ def home_view(request):
 
 
 
-class FileListView(ListView):
+class FileListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = "myfiles.html"
     paginator_class = SafePaginator
@@ -60,12 +61,13 @@ class FileListView(ListView):
         return context
 
 
-class FileDetailView(DetailView):
+class FileDetailView(LoginRequiredMixin, DetailView):
     model = Post
     template_name = "file_detail.html"
 
     def get(self, request, *args, **kwargs):
-        if Post.objects.filter(pk=self.kwargs['pk'], user=self.request.user).exists() or SharePost.objects.filter(file=self.get_object(), sharedUser=self.request.user).exists():
+        my_file = self.get_object()
+        if Post.objects.filter(pk=my_file.pk, user=self.request.user).exists() or SharePost.objects.filter(file=my_file, sharedUser=self.request.user).exists():
             file_detail =  Post.objects.get(pk=self.kwargs.get('pk'))
             context = {
                 'file_detail' : file_detail,

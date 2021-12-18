@@ -87,32 +87,39 @@
    </div>
 </section>
 
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/reconnecting-websocket.min.js' %}"></script>
 <script>
-// websockets script
-var loc = window.location
-var wsStart = 'ws://' + window.location.host + window.location.pathname
-if (loc.protocol === 'https:') {
-  wsStart = 'wss://' + loc.host + loc.pathname
-}
-var socket = new WebSocket(endpoint);
+  var loc = window.location;
+  // websockets script
+  var wsStart = 'ws://';
+    if (loc.protocol === 'https:'){
+        wsStart = 'wss://'
+    }
 
-socket.onmessage = function(e){
-  console.log("message", e);
-}
-socket.onopen = function(e){
-  console.log("open", e);
-}
-socket.onerror = function(e){
-  console.log("error", e);
-}
-socket.onclose = function(e){
-  console.log("close", e);
-}
-
-
-
-
-
-</script>
+    var endpoint = wsStart + loc.host + loc.pathname;
+  var socket = new ReconnectingWebSocket(endpoint);
+  
+  socket.onmessage = function(e){
+    console.log("message", e);
+  }
+  socket.onopen = function(e){
+    console.log("open", e);
+  }
+  socket.onerror = function(e){
+    console.log("error", e);
+  }
+  socket.onclose = function(e){
+    console.log("close", e);
+  }
+  
+  
+  
+  
+  
+  </script>
 
 {% endblock %}
