@@ -9,7 +9,7 @@
       Details
     </div>
     <div class="card-body">
-      <h5 class="card-title"> {{ file_detail.title }}</h5>
+      <h5 class="card-title" > {{ file_detail.title }} </h5>
       <p class="card-text">{{ file_detail.user }} Share this file with you</p>
       <p class="card-text">{{ file_detail.desc }}</p>
       <a href="{% url 'openFile' file_detail.id %}">
@@ -51,6 +51,68 @@
     </form>
 </div>
 
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline">
+        <div class="column is-6 is-offset-3">
+          <section class="hero is-primary">
+            <div class="hero-body">
+              <p class="title">Chatty</p>
+              <p class="subtitle">A simple chat built with Django, Channels and Redis</p>
+            </div>
+          </section>
+        </div>
 
+        <div class="column is-6 is-offset-3">
+          <div class="box">     
+            <div id="chat-messages">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <input class="input" type="text" placeholder="Message" id="chat-message-input">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <a class="button is-info" id="chat-message-submit">Submit</a>
+            </div>
+          </div>
+
+          <small class="has-text-grey-light">Your username: {{ username }}</small>
+        </div>
+      </div>
+   </div>
+</section>
+
+<script>
+// websockets script
+var loc = window.location
+var wsStart = 'ws://' + window.location.host + window.location.pathname
+if (loc.protocol === 'https:') {
+  wsStart = 'wss://' + loc.host + loc.pathname
+}
+var socket = new WebSocket(endpoint);
+
+socket.onmessage = function(e){
+  console.log("message", e);
+}
+socket.onopen = function(e){
+  console.log("open", e);
+}
+socket.onerror = function(e){
+  console.log("error", e);
+}
+socket.onclose = function(e){
+  console.log("close", e);
+}
+
+
+
+
+
+</script>
 
 {% endblock %}

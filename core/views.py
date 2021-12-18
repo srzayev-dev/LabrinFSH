@@ -80,7 +80,7 @@ class FileDetailView(DetailView):
         form = ShareFilesForm(request.POST)
         if form.is_valid():
             if file_detail.user == request.user:
-                error = "User already shared this file"
+                error = ''
                 if SharePost.objects.filter(file=file_detail, sharedUser=form.cleaned_data.get('sharedUser'), can_comment=form.cleaned_data.get('can_comment')).exists() == False:
                     try:
                         sharepost = SharePost(
@@ -100,7 +100,9 @@ class FileDetailView(DetailView):
                             return HttpResponseRedirect(self.request.path_info)
                         else:
                             error = "You can't share your own file with yourself"
-
+                else:
+                    error = "User already shared this file"
+                    
             else:
                 error = "You are not allowed to share this file"
             context = {
@@ -142,3 +144,9 @@ class OpenFileView(View):
         response['Content-Disposition'] = 'inline; filename="{}"'.format(
                 pdf.title)
         return response
+
+
+def room(request, room_name):
+    return render(request, "room.html", {
+        'room_name': room_name
+    })

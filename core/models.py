@@ -37,10 +37,27 @@ class SharePost(BaseModel):
     can_comment = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ("user", "sharedUser")
+        unique_together = ("user", "sharedUser", "file")
 
     def save(self, *args, **kwargs):
         if self.user == self.sharedUser:
             raise ValueError("User cannot share with himself")
         super().save(*args, **kwargs)
         
+class Comment(BaseModel):
+    file = models.ForeignKey(SharePost, on_delete=models.CASCADE, related_name="commentpost", verbose_name="Share Post")
+    user = models.ForeignKey(
+        'users.User', 
+        verbose_name="User",
+        related_name="commentUser",
+        on_delete=models.CASCADE, null=True, blank=True 
+    )
+    content = models.TextField(verbose_name="content")
+    
+
+    class Meta:
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+    
+    def __str__(self):
+        return f'{self.user} - {self.file}'

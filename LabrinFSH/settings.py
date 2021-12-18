@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*am&fm(7l7bu!4085r%*68l-l-=ls(20mp%c%vbe+vxg8dvq=(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'core',
     'django_celery_beat',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -72,7 +73,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'LabrinFSH.wsgi.application'
+ASGI_APPLICATION = 'LabrinFSH.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default' : {
+        'BACKEND' : 'channels_redis.core.RedisChannelLayer',
+        'CONFIG' : {
+            'hosts' : [('127.0.0.1', 6379)],
+        }
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
