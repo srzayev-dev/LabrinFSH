@@ -49,6 +49,23 @@
             </li>
           </ul>
     </form>
+    {% for detail in file_detail.shareposts.all %}
+
+    {% if detail.sharedUser == request.user and detail.can_comment == True %}
+    <br>
+    <p><strong>Comments</strong></p>
+    <br>
+    <div class="row" id="comments-list" >
+    <ul id="chat-item">
+    {% for comment in file_detail.commentpost.all %}
+    <div class="col-md-12 mt-3 mb-3" >
+        <p><strong>{{ comment.user.username }}</strong> </p>
+        <p>{{ comment.content }}</p>
+    </div>
+    {% endfor %}
+  </ul>
+    </div>
+    <hr>
 
     <form id="comment-form"  method="POST">
       {% csrf_token %}
@@ -61,6 +78,35 @@
       <br>
       <button class="btn btn-primary" type="submit"> Comment</button>
     </form>
+    {% elif file_detail.user == request.user %}
+    <br>
+    <p><strong>Comments</strong></p>
+    <br>
+    <div class="row" id="comments-list" >
+    <ul id="chat-item">
+    {% for comment in file_detail.commentpost.all %}
+    <div class="col-md-12 mt-3 mb-3" >
+        <p><strong>{{ comment.user.username }}</strong> </p>
+        <p>{{ comment.content }}</p>
+    </div>
+    {% endfor %}
+  </ul>
+    </div>
+    <hr>
+
+    <form id="comment-form"  method="POST">
+      {% csrf_token %}
+    
+       
+      <div class="form-group m-0">
+          <textarea name="text" cols="40" rows="3" class="comment-input"
+              placeholder="Here You can write your comment" required=""></textarea>
+      </div>
+      <br>
+      <button class="btn btn-primary" type="submit"> Comment</button>
+    </form>
+    {% endif %}
+    {% endfor %}
 </div>
 
 <!-- <section class="section">
@@ -115,7 +161,7 @@
   var endpoint = wsStart + loc.host + loc.pathname;
   var socket = new ReconnectingWebSocket(endpoint);
   var message = document.querySelector("#chat-message-input");
-  var chatHolder = document.querySelector("#chat-messages");
+  var chatHolder = document.querySelector("#chat-item");
   var user = "{{ request.user }}";
   
  
@@ -129,6 +175,15 @@
     var user_profession = newComment['author_profession'];
     var comment_id = newComment['comment_id'];
     var conversation_comment_section = $('#conversation-comment-section');
+
+    var textalign = "text-align: left";
+        chatHolder.innerHTML += `
+           <div class="col-md-12 mt-3 mb-3">
+                <p><strong> ${newComment.username} </strong> </p>
+                <p> ${newComment.comment_text}</p>
+            </div>
+            `
+      
 };
 
   
@@ -141,7 +196,6 @@
       e.preventDefault();
       var comment_text = $(this).find('.comment-input').val();
       data = {
-        'user':'Rzayev',
         'comment_text': comment_text,
       };
       // Send data to consumer
