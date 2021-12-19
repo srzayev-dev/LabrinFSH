@@ -18,8 +18,8 @@ class ChatConsumer(AsyncConsumer):
         })
         # await asyncio.sleep(10)
         file_id = self.scope['url_route']['kwargs']['file_id']
-        self.room = file_id
-        print()
+        self.room = str(file_id)
+        print('here', self.room)
         await self.channel_layer.group_add(
             self.room,
             self.channel_name,

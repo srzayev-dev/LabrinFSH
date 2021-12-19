@@ -50,7 +50,7 @@
           </ul>
     </form>
 
-    <form action="" id='comment-form'  method="POST">
+    <form action="" id="comment-form"  method="POST">
       {% csrf_token %}
     
        
@@ -135,16 +135,16 @@
   socket.onopen = function (event) {
     // console.log('Comment socket on open ', event);
     var form = document.getElementById('#comment-form');
-    form.submit(function (e) {
-    e.preventDefault();
-    var comment_text = $(this).find('.comment-input').val();
-    data = {
-      'user':'Rzayev',
-      'text': comment_text,
-    };
-    // Send data to consumer
-    socket.send(JSON.stringify(data));
-    $(this)[0].reset();
+    $(form).submit(function (e) {
+      e.preventDefault();
+      var comment_text = $(this).find('.comment-input').val();
+      data = {
+        'user':'Rzayev',
+        'text': comment_text,
+      };
+      // Send data to consumer
+      socket.send(JSON.stringify(data));
+      $(this)[0].reset();
     });
     };
 
