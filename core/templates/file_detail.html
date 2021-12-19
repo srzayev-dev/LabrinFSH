@@ -49,9 +49,21 @@
             </li>
           </ul>
     </form>
+
+    <form action="" id='comment-form'  method="POST">
+      {% csrf_token %}
+    
+       
+      <div class="form-group m-0">
+          <textarea name="text" cols="40" rows="3" class="comment-input"
+              placeholder="Here You can write your comment" required=""></textarea>
+      </div>
+      <br>
+      <button class="btn btn-primary" type="submit"> Comment</button>
+    </form>
 </div>
 
-<section class="section">
+<!-- <section class="section">
   <div class="container">
     <div class="columns is-multiline">
         <div class="column is-6 is-offset-3">
@@ -85,7 +97,7 @@
         </div>
       </div>
    </div>
-</section>
+</section> -->
 
 
 {% endblock %}
@@ -99,27 +111,49 @@
     if (loc.protocol === 'https:'){
         wsStart = 'wss://'
     }
-
-    var endpoint = wsStart + loc.host + loc.pathname;
+  var socket_url = wsStart + window.location.host + loc.pathname;
+  var endpoint = wsStart + loc.host + loc.pathname;
   var socket = new ReconnectingWebSocket(endpoint);
+  var message = document.querySelector("#chat-message-input");
+  var chatHolder = document.querySelector("#chat-messages");
+  var user = "{{ request.user }}";
   
-  socket.onmessage = function(e){
-    console.log("message", e);
-  }
-  socket.onopen = function(e){
-    console.log("open", e);
-  }
+ 
+  socket.onmessage = function (event) {
+    var newComment = JSON.parse(event.data);
+    // Receive consumer data
+    var comment_text = newComment['comment_text'];
+    var full_name = newComment['author_fullname'];
+    var user_url = newComment['author_url'];
+    var user_profession = newComment['author_profession'];
+    var comment_id = newComment['comment_id'];
+    var conversation_comment_section = $('#conversation-comment-section');
+};
+
+  
+
+  socket.onopen = function (event) {
+    // console.log('Comment socket on open ', event);
+    var form = document.getElementById('#comment-form');
+    form.submit(function (e) {
+    e.preventDefault();
+    var comment_text = $(this).find('.comment-input').val();
+    data = {
+      'user':'Rzayev',
+      'text': comment_text,
+    };
+    // Send data to consumer
+    socket.send(JSON.stringify(data));
+    $(this)[0].reset();
+    });
+    };
+
   socket.onerror = function(e){
     console.log("error", e);
   }
   socket.onclose = function(e){
     console.log("close", e);
   }
-  
-  
-  
-  
-  
   </script>
 
-{% endblock %}
+{% endblock js%}

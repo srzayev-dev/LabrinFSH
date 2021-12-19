@@ -7,7 +7,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 
 from core.models import Post, Comment
-
+User = get_user_model()
 
 class ChatConsumer(AsyncConsumer):
 
@@ -18,17 +18,55 @@ class ChatConsumer(AsyncConsumer):
         })
         # await asyncio.sleep(10)
         file_id = self.scope['url_route']['kwargs']['file_id']
-        me = self.scope['user']
+        self.room = file_id
 
-        print(file_id, me)
-        await self.send({
-            "type" : "websocket.send",
-            "text" : "Hello World"
-        })
+        await self.channel_layer.group_add(
+            self.room,
+            self.channel_name,
+        )
         
 
     async def websocket_disconnect(self, event):
         print('disconnect', event)
 
     async def websocket_receive(self, event):
-        print('receive', event)
+        new_comment_data = event.get('text')
+        new_comment = json.loads(new_comment_data)
+        user_id = new_comment['author']
+        user = User.objects.get(id=int(user_id))
+        comment_text = new_comment['comment_text']
+        file_id = new_comment['commentpost_id']
+        message = await self.create_comment(user_id, comment_text, file_id)
+        comment = {
+            'comment_text': comment_text,
+            'username': user.username,
+        }
+        await self.channel_layer.group_send(
+            self.room,
+            {
+                'type': 'show_comment',
+                'text': json.dumps(comment),
+            }
+        )
+
+    @database_sync_to_async
+    def get_file_id(self, file_id):
+        return str(Post.objects.get(id=int(file_id)).id)
+
+    @database_sync_to_async
+    def create_comment(self, user_id, comment_text, file_field_id):
+        author = User.objects.get(id=user_id)
+        file = Post.objects.get(id=file_field_id)
+        message = Comment(
+            users=author,
+            content=comment_text,
+            files=file,
+        )
+        message.save()
+        return message
+
+    async def show_comment(self, event):
+        await self.send({
+            'type': 'websocket.send',
+            'text': event['text'],
+        })
