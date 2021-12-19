@@ -50,7 +50,7 @@
           </ul>
     </form>
 
-    <form action="" id="comment-form"  method="POST">
+    <form id="comment-form"  method="POST">
       {% csrf_token %}
     
        
@@ -121,6 +121,7 @@
  
   socket.onmessage = function (event) {
     var newComment = JSON.parse(event.data);
+    console.log('new message', newComment);
     // Receive consumer data
     var comment_text = newComment['comment_text'];
     var full_name = newComment['author_fullname'];
@@ -134,18 +135,20 @@
 
   socket.onopen = function (event) {
     // console.log('Comment socket on open ', event);
-    var form = document.getElementById('#comment-form');
-    $(form).submit(function (e) {
+    var form = document.getElementById('comment-form');
+    console.log(form)
+    form.addEventListener('submit', function(e){
       e.preventDefault();
       var comment_text = $(this).find('.comment-input').val();
       data = {
         'user':'Rzayev',
-        'text': comment_text,
+        'comment_text': comment_text,
       };
       // Send data to consumer
       socket.send(JSON.stringify(data));
       $(this)[0].reset();
-    });
+    })
+
     };
 
   socket.onerror = function(e){

@@ -45,7 +45,7 @@ class SharePost(BaseModel):
         super().save(*args, **kwargs)
         
 class Comment(BaseModel):
-    file = models.ForeignKey(SharePost, on_delete=models.CASCADE, related_name="commentpost", verbose_name="Share Post")
+    file = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="commentpost", verbose_name="Share Post")
     user = models.ForeignKey(
         'users.User', 
         verbose_name="User",

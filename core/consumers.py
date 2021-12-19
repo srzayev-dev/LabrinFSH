@@ -32,11 +32,10 @@ class ChatConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
         new_comment_data = event.get('text')
         new_comment = json.loads(new_comment_data)
-        user_id = new_comment['author']
-        user = User.objects.get(id=int(user_id))
+        user = self.scope['user']
         comment_text = new_comment['comment_text']
-        file_id = new_comment['commentpost_id']
-        message = await self.create_comment(user_id, comment_text, file_id)
+        file_id = self.scope['url_route']['kwargs']['file_id']
+        message = await self.create_comment(user, comment_text, file_id)
         comment = {
             'comment_text': comment_text,
             'username': user.username,
@@ -54,13 +53,12 @@ class ChatConsumer(AsyncConsumer):
         return str(Post.objects.get(id=int(file_id)).id)
 
     @database_sync_to_async
-    def create_comment(self, user_id, comment_text, file_field_id):
-        author = User.objects.get(id=user_id)
+    def create_comment(self, author, comment_text, file_field_id):
         file = Post.objects.get(id=file_field_id)
         message = Comment(
-            users=author,
+            user=author,
             content=comment_text,
-            files=file,
+            file=file,
         )
         message.save()
         return message

@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'LabrinFSH.middleware.RequestLogMiddleware',
+    # 'LabrinFSH.middleware.RequestLogMiddleware',
 ]
 
 ROOT_URLCONF = 'LabrinFSH.urls'
